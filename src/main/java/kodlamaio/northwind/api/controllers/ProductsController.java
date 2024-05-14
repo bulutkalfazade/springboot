@@ -14,6 +14,7 @@ import kodlamaio.northwind.business.abstracts.ProductService;
 import kodlamaio.northwind.core.utilities.results.DataResult;
 import kodlamaio.northwind.core.utilities.results.Result;
 import kodlamaio.northwind.entities.concretes.Product;
+import kodlamaio.northwind.entities.dtos.ProductWithCategoryDto;
 
 @RestController
 @RequestMapping("/api/products")
@@ -31,13 +32,18 @@ public class ProductsController {
 	public DataResult<List<Product>> getAll(){
 		return this.productService.getAll();
 	}
+	//http://localhost:8080/api/products/getProductWithCategoryDetails
+	@GetMapping("/getProductWithCategoryDetails") 
+	public DataResult<List<ProductWithCategoryDto>> getProductWithCategoryDetails(){
+		return this.productService.getProductWithCategoryDetails();
+	}
 	
 	@PostMapping("/add")
 	public Result add(@RequestBody Product product) {
 		return this.productService.add(product);
 	}
 	
-	//postman example : http://localhost:8080/api/products/getByProductName?productName=Chai
+	//http://localhost:8080/api/products/getByProductName?productName=Chai
 	@GetMapping("/getByProductName") 
 	//This @RequestParam's job is to find the incoming data(productName) 
 	public DataResult<Product> getByProductName(@RequestParam String productName){
@@ -49,5 +55,24 @@ public class ProductsController {
 	(@RequestParam String productName, @RequestParam int categoryId){
 		return this.productService.getByProductNameAndCategoryId(productName, categoryId);
 	}
+	
+	//http://localhost:8080/api/products/getByProductNameContains?productName=ba
+	@GetMapping("/getByProductNameContains")
+	public DataResult<List<Product>> getByProductNameContains(@RequestParam String productName){
+		return this.productService.getByProductNameContains(productName);
+	}
+	
+	//http://localhost:8080/api/products/getAllByPage?pageNo=1&pageSize=10
+	@GetMapping("/getAllByPage")
+	public DataResult<List<Product>> getAll(int pageNo, int pageSize){
+		return this.productService.getAll(pageNo, pageSize);
+	}
+	
+	//http://localhost:8080/api/products/getAllDesc
+	@GetMapping("/getAllDesc")
+	public DataResult<List<Product>> getAllSorted(){
+		return this.productService.getAll();
+	}
+	
 	
 }
